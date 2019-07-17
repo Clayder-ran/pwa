@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>主页</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <div>内容</div>
+    <img src="/icon-1.png">
+    <hr>
+    <img src="https://assets.qschou.com/img/insurance-entrance/qrcode.png">
+    <hr>
+
+    <button id="movieItems">电影列表</button>
+    <ul class="content"></ul>
+
+
+    <script>
+        if(navigator.serviceWorker){
+            window.addEventListener('load', function(e){
+                navigator.serviceWorker.register('/sw.js', {scope: '/'})
+                .then(registration => {
+                    // console.log('注册: ', registration);
+                    // console.log('注册完成', registration.scope);
+                }).catch(err => {
+                    console.err(err)
+                });
+            })
+
+
+            navigator.serviceWorker.oncontrollerchange = function(event){
+                console.log('ControllerChange: ', '页面已更新');
+            }
+
+            if(!navigator.onLine){
+                console.log('当前网络未连接');
+            }
+
+            window.addEventListener('online', function(event){
+                console.log('网络已连接');
+            })
+            
+        }
+    </script>
+    <script src="./js/main.js" defer></script>
+</body>
+</html>

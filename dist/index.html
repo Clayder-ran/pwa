@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>主页</title>
+    <!-- 加载清单 -->
+    <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
@@ -19,30 +21,15 @@
 
 
     <script>
-        if(navigator.serviceWorker){
-            window.addEventListener('load', function(e){
-                navigator.serviceWorker.register('/sw.js', {scope: '/'})
-                .then(registration => {
-                    // console.log('注册: ', registration);
-                    // console.log('注册完成', registration.scope);
-                }).catch(err => {
-                    console.err(err)
-                });
-            })
-
-
-            navigator.serviceWorker.oncontrollerchange = function(event){
-                console.log('ControllerChange: ', '页面已更新');
-            }
-
-            if(!navigator.onLine){
-                console.log('当前网络未连接');
-            }
-
-            window.addEventListener('online', function(event){
-                console.log('网络已连接');
-            })
-            
+        window.onload = function(){
+            // 创建 sw-register.js 文件
+            let script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.defer = true;
+            script.src = `/js/sw-register.js?tamp=${Date.now()}`;
+            // 插入 DOM
+            let firstScript = document.getElementsByTagName('script')[0]
+            firstScript.parentNode.insertBefore(script, firstScript);
         }
     </script>
     <script src="./js/main.js" defer></script>

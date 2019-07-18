@@ -27,16 +27,25 @@ self.addEventListener('install', (event) => {
  */
 self.addEventListener('activate', (event) => {
     event.waitUntil(
-        // 清除 声明缓存列表 之外的缓存
         caches.keys().then(keys => {
+            // 清除 声明缓存列表 之外的缓存
             keys.forEach(key => {
                 if(key !== CACHE_NAME){
                     caches.delete(key);
                 }
             })
-        }).then(()=>{
-            self.clients.claim()  // 获取控制权
-            console.log('Service worker now ready to handle fetche events!');
+        })
+        // .then(()=>{
+        //     return self.clients.claim()  // 获取控制权
+        // })
+        .then(res => {
+            // console.log('Service worker now ready to handle fetche events!');
+            return self.clients.matchAll()
+        }).then(clients => {
+            console.log(clients);
+            clients.forEach(client => {
+                client.postMessage('sw.updated');
+            })
         })
     )
 })
